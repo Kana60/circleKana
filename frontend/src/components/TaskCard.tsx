@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Task, TaskStatus } from '../types';
 
 const STATUS_NEXT: Record<TaskStatus, TaskStatus | null> = {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getTasks, createTask, updateTask, deleteTask } from '../api/tasks';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../hooks/useSocket';
-import { Task, TaskStatus } from '../types';
+import { Task, TaskStatus, TaskStatusChangedEvent } from '../types';
 import TaskCard from '../components/TaskCard';
 import CreateTaskModal from '../components/CreateTaskModal';
 
@@ -28,7 +28,7 @@ const TasksPage = () => {
   }, []);
 
   useSocket({
-    onTaskStatusChanged: useCallback((payload) => {
+    onTaskStatusChanged: useCallback((payload: TaskStatusChangedEvent) => {
       setTasks((prev) =>
         prev.map((t) => (t.id === payload.id ? { ...t, status: payload.status } : t)),
       );

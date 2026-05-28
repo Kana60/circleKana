@@ -14,24 +14,27 @@ interface UseSocketOptions {
 export const useSocket = (options: UseSocketOptions) => {
   const socketRef = useRef<Socket | null>(null);
 
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
   useEffect(() => {
     const socket = io(SOCKET_URL, { transports: ['websocket'] });
     socketRef.current = socket;
 
     socket.on('task:statusChanged', (payload: TaskStatusChangedEvent) => {
-      options.onTaskStatusChanged?.(payload);
+      optionsRef.current.onTaskStatusChanged?.(payload);
     });
 
     socket.on('task:created', (task: Task) => {
-      options.onTaskCreated?.(task);
+      optionsRef.current.onTaskCreated?.(task);
     });
 
     socket.on('task:updated', (task: Task) => {
-      options.onTaskUpdated?.(task);
+      optionsRef.current.onTaskUpdated?.(task);
     });
 
     socket.on('task:deleted', (payload: { id: string }) => {
-      options.onTaskDeleted?.(payload);
+      optionsRef.current.onTaskDeleted?.(payload);
     });
 
     return () => {
